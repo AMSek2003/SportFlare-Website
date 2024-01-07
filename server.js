@@ -9,7 +9,6 @@ const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
-const path = require('path'); 
 
 const initializePassport = require('./passport-config')
 initializePassport(
@@ -19,7 +18,7 @@ initializePassport(
 )
 
 app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', './views')
 app.use(express.static('views'))
 app.use(express.urlencoded({ extended: false }))
 app.use(flash())
