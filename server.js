@@ -134,6 +134,4 @@ function checkAuthenticatedAdmin(req, res, next) {
     res.redirect('/') 
 }
 
-app.listen(3000, () => {
-    console.log(`Serwer działa na http://localhost:3000/`)
-});
+app.listen(process.env.PORT || 3000)
