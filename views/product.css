@@ -1,0 +1,51 @@
+/* Style for the product view */
+
+#product{
+    display: flex;
+    margin-top: 20px;
+}
+
+#product .image{
+    margin: 30px;
+    width: 30%;
+    margin-right: 50px;
+}
+
+#product .details{
+    margin: 30px;
+    margin-top: 50px;
+    width: 50%;
+    padding-top: 30px;
+}
+
+#product .details h4{
+    padding: 40px 0 20px 0;
+}
+
+#product .details h2{
+    font-size: 26px;
+}
+
+#product .details input{
+    width: 50px;
+    height: 50px;
+    margin-top: 20px;
+    padding-left: 10px;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+#product .details button{
+    border: 2px solid black;
+    padding: 5px;
+    width: 30%;
+    height: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: rgb(255, 208, 173);
+    transition: 0.4s ease;
+}
+
+#product .details button:hover{
+    background-color: rgb(255, 149, 57);
+}

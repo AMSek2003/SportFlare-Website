@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SportFlare - Sklep Sportowy</title>
+        <script src="https://kit.fontawesome.com/3657dbfb53.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="management.css">
+    </head>
+
+    <body>
+        <section id="header">
+            <a href="/"><img src="images/logo.png" id="logo" alt=""></a>
+
+            <div id="navbar">
+                <li id="search"> <!--TODO search functionality-->
+                    <a href="#" id="search-icon"><i class="fa fa-search" aria-hidden="true"></i></a>
+                    <input type="text" id="search-inp" name="search-inp">
+                </li>
+                <li><a href="/">Strona Główna</a></li>
+                <li><a href="/sklep">Sklep</a></li>
+                <% if (!isLoggedIn) {%>
+                <li><a href="/logowanie">Zaloguj się</a></li> <!--TODO add logged out-->
+                <% }%>
+                <% if (isAdmin) { %>
+                <li><a class="active" href="/admin">Zarządzaj</a></li> <!--TODO-->
+                <% } %>
+                <% if (isLoggedIn) {%>
+                <li><form action="/logout?_method=DELETE" method="POST">
+                    <button type="submit">Wyloguj się</button>
+                </form></li>
+                <li><a href="/koszyk"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
+                <% } %>
+            </div>
+        </section>
+
+        <form id="add"> <!--TODO backend-->
+            <h2>Dodaj produkt</h2>
+            <input type="text" name="productname" id="productname" placeholder="Nazwa" required>
+            <textarea name="description" id="description" placeholder="Opis" required></textarea>
+            <input type="number" name="price" id="price" placeholder="Cena (PLN)" required>
+            <input type="file" name="imageUpload" id="imageUpload" required hidden>
+            <button id="choose">Wybierz obraz</button>
+            <input type="submit" value="Prześlij" name="submit">
+        </form>
+
+        <section id="products"> <!--TODO displaying items and removing products-->
+            <div class="card">
+                <a href="#">
+                <div class="image">
+                    <img src="images/not_found.png" alt="">
+                </div>
+                <div class="caption">
+                    <p class="prod_name">Nazwa</p>
+                    <p class="prod_price">0</p>
+                </div>
+                <div class="remove">
+                    <button>Usuń produkt</button>
+                </div>
+            </a></div>
+        </section>
+        
+
+        <footer>
+            <div id="col">
+                <img src="images/logo.png" id="logo" alt="">
+                <h4>Kontakt</h4>
+                <p><strong>Adres: </strong>ul. Księżycowa 42 50-999 Wrocław</p>
+                <p><strong>Telefon: </strong>+48 123 456 789</p>
+                <p><strong>Godziny Otwarcia: </strong>10:00 - 22:00, Pon-Sob</p>
+            </div>
+            <div id="col">
+                <h4>Konto</h4>
+                <% if (isLoggedIn) {%>
+                <a href="#"><p>Koszyk</p></a>
+                <form action="/logout?_method=DELETE" method="POST">
+                    <button type="submit">Wyloguj się</button>
+                </form>
+                    <% } else {%>
+                <a href="/logowanie"><p >Zaloguj się</p></a>
+                <a href="/rejestracja"><p >Zarejestruj się</p></a>
+                <a href="#"><p >Odzyskaj hasło</p></a>
+                <% }%>
+            </div>
+            <div id="col">
+                <h4>Social Media</h4>
+                <div id="icons">
+                    <a href="https://www.facebook.com/" target="_blank">
+                        <i class="fa-brands fa-facebook" aria-hidden="true"></i></a>
+                    <a href="https://www.instagram.com/" target="_blank">
+                        <i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+                    <a href="https://twitter.com/" target="_blank">
+                        <i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
+                    <a href="https://pl.pinterest.com/" target="_blank">
+                        <i class="fa-brands fa-pinterest" aria-hidden="true"></i></a>
+                    <a href="https://www.youtube.com/" target="_blank">
+                        <i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </footer>
+
+
+        <script>
+                // Show/hide search input
+                var searchInput = document.getElementById('search-inp');
+
+                document.getElementById('search-icon').addEventListener('click', function () {
+                    searchInput.classList.toggle('show');
+                });
+        </script>
+    </body>
+</html>

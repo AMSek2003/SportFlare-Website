@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SportFlare - Sklep Sportowy</title>
+        <script src="https://kit.fontawesome.com/3657dbfb53.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="login.css">
+    </head>
+
+    <body>
+        <section class="container">
+            <a href="/"><img src="images/logo.png" id="logo" alt=""></a>
+            <div class="form_box">
+                <h2>ZALOGUJ SIĘ</h2>
+                <% if (messages.error) {%>
+                    <%= messages.error %>
+                <% } %>
+                <form action="/logowanie" method="POST">
+                    <div class="input_group">
+                        <div class="input_field">
+                            <i class="fa-solid fa-envelope"></i>
+                            <input type="email" id="email" name="email" placeholder="Email">
+                        </div>
+                        <div class="input_field">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="password" name="password" placeholder="Hasło">
+                        </div>
+                        <p><a href="/rejestracja">Nie pamiętam hasła</a></p>
+                    </div>
+                    <div class="button_field">
+                        <button type="submit">Zaloguj się</button>
+                        <button type="button" onclick="location.href='/rejestracja'" class="disable">Zarejestruj się</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </body>
+</html>

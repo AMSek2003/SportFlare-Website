@@ -1,0 +1,145 @@
+/* Style for the main page */
+
+#hero {
+    background-image: url("images/hero-christmas.jpg");
+    display: flex;
+    justify-content: space-between;
+    padding: 40px;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+#hero-product {
+    height: 250px;
+    width: auto;
+    padding-left: 60px;
+}
+
+#hero button {
+    background-image: url("images/hero-button.png");
+    background-color: transparent;
+    border: 0;
+    color: rgb(61, 6, 113);
+    padding: 40px 55px 40px 55px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+#collections {
+    margin: 20px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+#col2 {
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    gap: 10px;
+}
+
+#col2 a{
+    text-decoration: none;
+}
+
+#equipment {
+    background-image: url("images/equip.jpg");
+}
+
+#supplements {
+    background-image: url("images/sup.jpg");
+}
+
+#accessories {
+    background-image: url("images/acc.jpg");
+}
+
+#clothes {
+    background-image: url("images/clothes.jpg");
+}
+
+#equipment,
+#supplements,
+#accessories,
+#clothes{
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 200px 100px 200px 100px;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+
+#featured_products {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: rgb(255, 189, 146);
+    text-align: start;
+   
+}
+
+#featured_products h2 {
+    text-align: center;
+    margin: 20px;
+    font-weight: 600;
+}
+
+.prod_container{
+    display: flex;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 10px;
+    text-align: start;
+    flex-wrap: wrap;
+    justify-content: space-between; 
+}
+
+.card {
+    max-width: 280px;
+    width: 280px;
+    flex: 1 1 250px;
+    height: 400px;
+    border: 1px solid lightgray;
+    margin: 10px;
+    text-align: center;
+    background-color: rgb(255, 240, 253);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card p,
+.card button {
+    margin: 2px 2px 2px 2px;
+}
+
+.prod_image {
+    height: 60%;
+    margin-bottom: 20px;
+}
+
+.prod_image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.rate i {
+    color: gold;
+}
+
+.add_cart button {
+    border: none;
+    padding: 5px;
+    width: 80%;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: rgb(215, 173, 255);
+    transition: 0.4s ease;
+}
+
+.add_cart button:hover{
+    background-color: rgb(176, 57, 255);
+}

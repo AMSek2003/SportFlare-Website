@@ -1,0 +1,72 @@
+/* Style for the shop page */
+
+#products {
+    max-width: 1500px;
+    width: 95%;
+    margin: 30px auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: auto;
+}
+
+#products .card{
+    max-width: 300px;
+    flex: 1 1 210px;
+    text-align: center;
+    height: 420px;
+    border: 1px solid lightgray;
+    margin: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+#products .card a{
+    text-decoration: none;
+}
+
+#products .card .image{
+    height: 60%;
+    margin-bottom: 20px;
+}
+
+#products .card .image img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#products .card .caption{
+    padding-left: 15px;
+    padding-bottom: 15px;
+    text-align: left;
+    line-height: 2px;
+    height: 25%;
+}
+
+#products .card .caption .rate{
+    display: flex;
+}
+
+#products .card .caption .rate i{
+    color: gold;
+    margin-left: 2px;
+}
+
+#products .card a{
+    width: 50%;
+}
+
+#products .card .add_cart button{
+    border: none;
+    transition: 0.4s ease;
+    background-color: rgb(215, 173, 255);
+    padding: 5px;
+    width: 60%;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#products .card .add_cart button:hover{
+    background-color: rgb(176, 57, 255);
+}
