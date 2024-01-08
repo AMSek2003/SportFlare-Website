@@ -14,17 +14,17 @@
             <a href="/"><img src="images/logo.png" id="logo" alt=""></a>
 
             <div id="navbar">
-                <li id="search"> <!--TODO search functionality-->
-                    <a href="#" id="search-icon"><i class="fa fa-search" aria-hidden="true"></i></a>
+                <li id="search">
+                    <a id="search-icon"><i class="fa fa-search" aria-hidden="true"></i></a>
                     <input type="text" id="search-inp" name="search-inp">
                 </li>
                 <li><a href="/">Strona Główna</a></li>
                 <li><a href="/sklep">Sklep</a></li>
                 <% if (!isLoggedIn) {%>
-                <li><a href="/logowanie">Zaloguj się</a></li> <!--TODO add logged out-->
+                <li><a href="/logowanie">Zaloguj się</a></li>
                 <% }%>
                 <% if (isAdmin) { %>
-                <li><a href="/admin">Zarządzaj</a></li> <!--TODO-->
+                <li><a href="/admin">Zarządzaj</a></li>
                 <% } %>
                 <% if (isLoggedIn) {%>
                 <li><form action="/logout?_method=DELETE" method="POST">

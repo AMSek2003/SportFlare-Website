@@ -14,7 +14,7 @@
             <a href="/"><img src="/images/logo.png" id="logo" alt=""></a>
             <div id="navbar">
                 <li id="search"> <!--TODO search functionality-->
-                    <a href="#" id="search-icon"><i class="fa fa-search" aria-hidden="true"></i></a>
+                    <a id="search-icon"><i class="fa fa-search" aria-hidden="true"></i></a>
                     <input type="text" id="search-inp" name="search-inp">
                 </li>
                 <li><a class="active" href="/">Strona Główna</a></li>
@@ -39,31 +39,31 @@
                 <h2><strong>Prezent przed świętami?</strong></h2>
                 <h1><strong></strong>25% rabatu</strong></h1>
                 <h4><strong></strong>Na wybrany asortyment</strong></h4>
-                <button>SPRAWDŹ TERAZ!</button> <!--TODO add button link-->
+                <button>SPRAWDŹ TERAZ!</button>
             </div>
             <img id="hero-product" src="/images/hero-product.png">
         </section>
 
         <section id="collections">
             <div id="col2">
-                <a href="#"> <!--TODO add links here -->
+                <a>
                     <div id="equipment">
                         <h1>Wyposaż swoją domową siłownię</h1>
                     </div>
                 </a>
-                <a href="#"> <!--TODO-->
+                <a>
                     <div id="supplements">
                         <h1>Zadbaj o odpowiednią suplementację</h1>
                     </div>
                 </a>
             </div>
             <div id="col2">
-                <a href="#"> <!--TODO-->
+                <a>
                     <div id="accessories">
                         <h1>Zaopatrz się w akcesoria do ćwiczeń</h1>
                     </div>
                 </a>
-                <a href="#"> <!--TODO-->
+                <a>
                     <div id="clothes">
                         <h1>Prezentuj się w modnych i wygodnych ubraniach</h1>
                     </div>
@@ -138,7 +138,6 @@
 
 
         <script>
-            // Show/hide search input
             var searchInput = document.getElementById('search-inp');
 
             document.getElementById('search-icon').addEventListener('click', function () {

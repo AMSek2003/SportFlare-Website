@@ -122,6 +122,10 @@ body {
     justify-content: center;
 }
 
+#search a{
+    cursor: pointer;
+}
+
 #search-inp {
     width: 0px;
     opacity: 0;
