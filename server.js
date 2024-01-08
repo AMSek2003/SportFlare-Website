@@ -71,7 +71,7 @@ app.post("/rejestracja", checkNotAuthenticated, async (req, res) => { // TODO da
     user.save().then(newUser => {
         res.redirect('/logowanie');
     }).catch(err => {
-        res.render('/rejestracja', {
+        res.render('rejestracja', {
             errorMessage: 'Błąd rejestracji użytkownika'
         });
     });
