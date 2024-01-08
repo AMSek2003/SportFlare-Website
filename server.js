@@ -9,12 +9,13 @@ const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
+const User = require('./models/user')
 
 const initializePassport = require('./passport-config')
 initializePassport(
-    passport, 
-    email => users.find(user => user.email === email),
-    id => users.find(user => user.id === id)
+    passport,
+    async (email) => await User.findOne({ email: email }),
+    async (_id) => await User.findById(_id)
 )
 
 app.set('view engine', 'ejs')
@@ -37,10 +38,9 @@ const db = mongoose.connection
 db.on('error', error => console.error(error))
 db.once('open', () => console.log('Połączono z Mongoose'))
 
-const users = [] // TODO normal database
-
-app.get("/", (req, res) => {
-    res.render('main', { isLoggedIn: checkLogged(req),  isAdmin: checkAdmin(req) })
+app.get("/", async (req, res) => {
+    const isAdmin = await checkAdmin(req);
+    res.render('main', { isLoggedIn: checkLogged(req), isAdmin });
 });
 
 app.post("/logowanie", checkNotAuthenticated, passport.authenticate('local', {
@@ -56,14 +56,23 @@ app.get("/logowanie", checkNotAuthenticated, (req, res) => {
 app.post("/rejestracja", checkNotAuthenticated, async (req, res) => { // TODO database
    try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    users.push({
-        id: Date.now().toString(),
+
+    const user = new User({
         name: req.body.name,
         email: req.body.email,
         password: hashedPassword,
-        role: 'user'
+        role: 'user',
+        cart: []
     })
-    res.redirect('/logowanie')
+
+    user.save().then(newUser => {
+        res.redirect('/logowanie');
+    }).catch(err => {
+        res.render('/rejestracja', {
+            errorMessage: 'Błąd rejestracji użytkownika'
+        });
+    });
+
    } catch {
     res.redirect('/rejestracja')
    }
@@ -73,16 +82,24 @@ app.get("/rejestracja", checkNotAuthenticated, (req, res) => {
     res.render('register')
 });
 
-app.get("/sklep", (req, res) => {
-    res.render('shop', { isLoggedIn: checkLogged(req),  isAdmin: checkAdmin(req) })
+app.get("/sklep", async (req, res) => {
+    const isAdmin = await checkAdmin(req);
+    res.render('shop', { isLoggedIn: checkLogged(req), isAdmin });
 });
 
-app.get("/koszyk", checkAuthenticated, (req, res) => {
-    res.render('cart', { isLoggedIn: checkLogged(req),  isAdmin: checkAdmin(req) })
+app.get("/koszyk", checkAuthenticated, async (req, res) => {
+    const isAdmin = await checkAdmin(req);
+    res.render('cart', { isLoggedIn: checkLogged(req), isAdmin });
 });
 
-app.get("/admin", checkAuthenticatedAdmin, (req, res) => {
-    res.render('management', { isLoggedIn: checkLogged(req),  isAdmin: checkAdmin(req) })
+app.get("/admin", async (req, res) => {
+    const isAdmin = await checkAdmin(req);
+
+    if (isAdmin) {
+        res.render('management', { isLoggedIn: checkLogged(req), isAdmin });
+    } else {
+        res.redirect('/');
+    }
 });
 
 app.delete('/logout', (req, res) => {
@@ -93,20 +110,26 @@ app.delete('/logout', (req, res) => {
         res.redirect('/');
     });
 });
-function checkAdmin(req) {
-    if (req.isAuthenticated() && req.user.role === 'admin') {
-        return true
-    }
 
-    return false
+async function checkAdmin(req) {
+    try {
+        if (req.isAuthenticated()) {
+            const thisUser = await req.user
+            const thisId = thisUser._id
+            const user = await User.find({_id: thisId});
+
+            return user[0].role === 'admin';
+        }
+        
+        return false;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
 }
 
 function checkLogged(req) {
-    if (req.isAuthenticated()) {
-        return true
-    }
-
-    return false
+    return req.isAuthenticated();
 }
 
 
@@ -123,14 +146,6 @@ function checkNotAuthenticated(req, res, next) {
         return res.redirect('/')
     }
     next()
-}
-
-function checkAuthenticatedAdmin(req, res, next) {
-    if (req.isAuthenticated() && req.user.role === 'admin') {
-        return next()
-    }
-
-    res.redirect('/') 
 }
 
 app.listen(process.env.PORT || 3000)

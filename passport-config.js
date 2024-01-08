@@ -5,29 +5,31 @@ const bcrypt = require('bcrypt')
 
 
 function initialize(passport, getUserByEmail, getUserById) {
-    const authenticateUser = async (email, password, done) => {
-        const user = getUserByEmail(email)
-        if (user == null) {
-            return done(null, false, { message: 'Nie istnieje użytkownik o podanym adresie email' })
-        }
+    const User = require('./models/user');
 
+    const authenticateUser = async (email, password, done) => {
         try {
+            const user = await User.findOne({ email: email });
+
+            if (!user) {
+                return done(null, false, { message: 'Nie istnieje użytkownik o podanym adresie email' });
+            }
+
             if (await bcrypt.compare(password, user.password)) {
-                return done(null, user)
+                return done(null, user);
             } else {
-               return done(null, false, { message: 'Nieprawidłowe hasło'}) 
+                return done(null, false, { message: 'Nieprawidłowe hasło' });
             }
         } catch (e) {
-            return done(e)
+            return done(e);
         }
-
-    }
+    };
 
     passport.use(new LocalStrategy({ usernameField: 'email' }, 
     authenticateUser))
-    passport.serializeUser((user, done) => done(null,user.id))
-    passport.deserializeUser((id, done) => {
-        return done(null, getUserById(id))
+    passport.serializeUser((user, done) => done(null,user._id))
+    passport.deserializeUser((_id, done) => {
+        return done(null, getUserById(_id))
     })
 }
 

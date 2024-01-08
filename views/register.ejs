@@ -15,6 +15,9 @@
             <div class="form_box">
                 <h2>ZAREJESTRUJ SIĘ</h2>
                 <form action="/rejestracja" method="POST">
+                    <% if (locals.errorMessage != null) { %>
+                        <%=errorMessage%>
+                    <% } %>
                     <div class="input_group">
                         <div class="input_field">
                             <i class="fa-solid fa-envelope"></i>
