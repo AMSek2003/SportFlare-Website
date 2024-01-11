@@ -74,11 +74,13 @@
         <section id="featured_products">
             <h2>Wyróżnione produkty</h2>
             <div class="prod_container">
-                <div class="card"> <!--TODO - add 5 featured products-->
+                <% items.slice(0, 5).forEach(item => { %>
+                <div class="card"> <!--TODO - add links and add to cart-->
                     <div class="prod_image">
-                        <img src="/images/not_found.png" alt="">
+                        <img src="<%= item.imagePath %>">
                     </div>
                     <div class="caption">
+                        <p class="prod_name"><%= item.name %></p>
                         <p class="rate">
                             <i class="fa fa-star" aria-hidden="true"></i>
                             <i class="fa fa-star" aria-hidden="true"></i>
@@ -86,14 +88,13 @@
                             <i class="fa fa-star" aria-hidden="true"></i>
                             <i class="fa fa-star" aria-hidden="true"></i>
                         </p>
-                        <p class="prod_name">Nazwa</p>
-                        <p class="prod_price">0 zł</p>
+                        <p class="prod_price"><%= item.price %> zł</p>
                     </div>
                     <div class="add_cart">
                         <button>Dodaj do koszyka</button>
                     </div>
                 </div>
-
+                <% }) %>
             </div>
 
         </section>

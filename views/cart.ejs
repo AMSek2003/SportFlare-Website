@@ -21,10 +21,10 @@
                 <li><a href="/">Strona Główna</a></li>
                 <li><a href="/sklep">Sklep</a></li>
                 <% if (!isLoggedIn) {%>
-                <li><a href="/logowanie">Zaloguj się</a></li> <!--TODO add logged out-->
+                <li><a href="/logowanie">Zaloguj się</a></li>
                 <% }%>
                 <% if (isAdmin) { %>
-                <li><a href="/admin">Zarządzaj</a></li> <!--TODO-->
+                <li><a href="/admin">Zarządzaj</a></li>
                 <% } %>
                 <% if (isLoggedIn) {%>
                 <li><form action="/logout?_method=DELETE" method="POST">
@@ -35,24 +35,34 @@
             </div>
         </section>
 
-        <section id="cart"> <!--TODO backend-->
-            <h3 id="amount_of_prod">0 Produktów</h3>
+        <section id="cart"> <!--TODO finish backend-->
+            <% let amount = 0;
+                cart.forEach(item => {
+                sum += 1;
+            }); %>
+            <h3 id="amount_of_prod"> <%= amount %> Produktów</h3>
             <div class="card">
+                <% cart.forEach(item => { %>
                 <div class="image">
                     <img src="images/not_found.png">
                 </div>
         
                 <div class="caption">
-                    <p class="name">Nazwa</p>
-                    <p class="price"><b>0 zł</b></p>
+                    <p class="name"><%= item.name %></p>
+                    <p class="price"><b><%= item.price %> zł</b></p>
                     <div class="amount">
                         <p>Ilość</p>
                         <input type="number" value="1" min="1">
                     </div>
                     <button class="remove">Usuń</button>
                 </div>
+                <% }) %>
             </div>
-            <h2 id="total_price">Suma: 0 zł</h2>
+            <% let sum = 0;
+                cart.forEach(item => {
+                sum += item.price;
+            }); %>
+            <h2 id="total_price">Suma: <%= sum %> zł</h2>
         </section>
 
         <footer>

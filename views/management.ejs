@@ -21,10 +21,10 @@
                 <li><a href="/">Strona Główna</a></li>
                 <li><a href="/sklep">Sklep</a></li>
                 <% if (!isLoggedIn) {%>
-                <li><a href="/logowanie">Zaloguj się</a></li> <!--TODO add logged out-->
+                <li><a href="/logowanie">Zaloguj się</a></li>
                 <% }%>
                 <% if (isAdmin) { %>
-                <li><a class="active" href="/admin">Zarządzaj</a></li> <!--TODO-->
+                <li><a class="active" href="/admin">Zarządzaj</a></li>
                 <% } %>
                 <% if (isLoggedIn) {%>
                 <li><form action="/logout?_method=DELETE" method="POST">
@@ -35,30 +35,35 @@
             </div>
         </section>
 
-        <form id="add"> <!--TODO backend-->
+        <form id="add" action="/admin" method="POST" enctype="multipart/form-data">
             <h2>Dodaj produkt</h2>
-            <input type="text" name="productname" id="productname" placeholder="Nazwa" required>
-            <textarea name="description" id="description" placeholder="Opis" required></textarea>
-            <input type="number" name="price" id="price" placeholder="Cena (PLN)" required>
-            <input type="file" name="imageUpload" id="imageUpload" required hidden>
-            <button id="choose">Wybierz obraz</button>
+            <% if (locals.errorMessage != null) { %>
+                <%=errorMessage%>
+            <% } %>
+            <input type="text" name="name" id="name" placeholder="Nazwa" required>
+            <textarea name="description" id="description" placeholder="Opis"></textarea>
+            <input type="number" name="price" id="price" min="1" placeholder="Cena (PLN)" required>
+            <input type="file" name="image" id="image" required hidden>
+            <button id="choose" onclick="chooseImage()">Prześlij obraz</button>
             <input type="submit" value="Prześlij" name="submit">
         </form>
 
-        <section id="products"> <!--TODO displaying items and removing products-->
+        <section id="products">
+            <% items.forEach(item => { %>
             <div class="card">
                 <a href="#">
                 <div class="image">
-                    <img src="images/not_found.png" alt="">
+                    <img src="<%= item.imagePath %>">
                 </div>
                 <div class="caption">
-                    <p class="prod_name">Nazwa</p>
-                    <p class="prod_price">0</p>
+                    <p class="prod_name"><%= item.name %></p>
+                    <p class="prod_price"><%= item.price %> zł</p>
                 </div>
                 <div class="remove">
-                    <button>Usuń produkt</button>
+                    <button>Usuń produkt</button> <!--TODO remove product-->
                 </div>
             </a></div>
+            <% }) %>
         </section>
         
 
@@ -102,12 +107,16 @@
 
 
         <script>
-                // Show/hide search input
                 var searchInput = document.getElementById('search-inp');
 
                 document.getElementById('search-icon').addEventListener('click', function () {
                     searchInput.classList.toggle('show');
                 });
+
+                function chooseImage() {
+                    var fileInput = document.getElementById('image');
+                    fileInput.click();
+        }
         </script>
     </body>
 </html>

@@ -6,12 +6,13 @@
     margin: 30px auto;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     margin: auto;
 }
 
 #products .card{
-    max-width: 300px;
+    width: 20%;
+    max-width: 20%;
+    box-sizing: border-box;
     flex: 1 1 210px;
     text-align: center;
     height: 420px;

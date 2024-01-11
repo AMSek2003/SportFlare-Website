@@ -59,7 +59,7 @@ body {
 #header {
     display: flex;
     align-items: center;
-    padding: 15px 60px;
+    padding: 10px 60px;
     background-color: #fef5fc;
     justify-content: space-between;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -69,7 +69,7 @@ body {
 }
 
 #logo {
-    width: 160px;
+    width: 120px;
     height: auto;
 }
 
