@@ -57,8 +57,10 @@ db.once('open', () => console.log('Połączono z Mongoose'))
 app.get("/", async (req, res) => {
     let searchOptions = {}
     if (req.query.searchinp != null && req.query.searchinp != '') {
-        searchOptions.name = new RegExp(req.query.searchinp, 'i')
-        searchOptions.description = new RegExp(req.query.searchinp, 'i')
+        searchOptions["$or"] = [
+            { name: new RegExp(req.query.searchinp, 'i') },
+            { description: new RegExp(req.query.searchinp, 'i') }
+        ]
     }
     const isAdmin = await checkAdmin(req)
     const items = await Item.find({})
@@ -112,8 +114,10 @@ app.get("/rejestracja", checkNotAuthenticated, (req, res) => {
 app.get("/sklep", async (req, res) => {
     let searchOptions = {}
     if (req.query.searchinp != null && req.query.searchinp != '') {
-        searchOptions.name = new RegExp(req.query.searchinp, 'i')
-        searchOptions.description = new RegExp(req.query.searchinp, 'i')
+        searchOptions["$or"] = [
+            { name: new RegExp(req.query.searchinp, 'i') },
+            { description: new RegExp(req.query.searchinp, 'i') }
+        ]
     }
     const isAdmin = await checkAdmin(req);
     const items = await Item.find(searchOptions)
@@ -123,13 +127,15 @@ app.get("/sklep", async (req, res) => {
         items:items,
         searchOptions: req.query
     })
-});
+})
 
 app.get("/koszyk", checkAuthenticated, async (req, res) => {
     let searchOptions = {}
     if (req.query.searchinp != null && req.query.searchinp != '') {
-        searchOptions.name = new RegExp(req.query.searchinp, 'i')
-        searchOptions.description = new RegExp(req.query.searchinp, 'i')
+        searchOptions["$or"] = [
+            { name: new RegExp(req.query.searchinp, 'i') },
+            { description: new RegExp(req.query.searchinp, 'i') }
+        ]
     }
     const isAdmin = await checkAdmin(req);
     const thisUser = await req.user
@@ -142,13 +148,15 @@ app.get("/koszyk", checkAuthenticated, async (req, res) => {
         cart: usersCart,
         searchOptions: req.query
      })
-});
+})
 
 app.get("/admin", async (req, res) => {
     let searchOptions = {}
     if (req.query.searchinp != null && req.query.searchinp != '') {
-        searchOptions.name = new RegExp(req.query.searchinp, 'i')
-        searchOptions.description = new RegExp(req.query.searchinp, 'i')
+        searchOptions["$or"] = [
+            { name: new RegExp(req.query.searchinp, 'i') },
+            { description: new RegExp(req.query.searchinp, 'i') }
+        ]
     }
     const isAdmin = await checkAdmin(req);
     const items = await Item.find({})
@@ -163,7 +171,7 @@ app.get("/admin", async (req, res) => {
     } else {
         res.redirect('/')
     }
-});
+})
 
 app.post("/admin", upload.single('image'), async (req, res) => {
     try {
@@ -184,8 +192,8 @@ app.post("/admin", upload.single('image'), async (req, res) => {
                 isAdmin: true,
                 items: items,
                 errorMessage: 'Błąd przy dodawaniu nowego produktu'
-            });
-        });
+            })
+        })
     } catch {
         if (item.image != null){
             removeImage(item.image)
@@ -197,11 +205,55 @@ app.post("/admin", upload.single('image'), async (req, res) => {
 app.delete('/logout', (req, res) => {
     req.logOut((err) => {
         if (err) {
-            return next(err);
+            return next(err)
         }
-        res.redirect('/');
-    });
-});
+        res.redirect('/')
+    })
+})
+
+app.get('/:id', async (req,res) => {
+    let searchOptions = {}
+    if (req.query.searchinp != null && req.query.searchinp != '') {
+        searchOptions["$or"] = [
+            { name: new RegExp(req.query.searchinp, 'i') },
+            { description: new RegExp(req.query.searchinp, 'i') }
+        ]
+    }
+    const isAdmin = await checkAdmin(req)
+
+    try {
+        const item = await Item.findById(req.params.id)
+        res.render('product', {
+        isLoggedIn: checkLogged(req), 
+        isAdmin, 
+        searchOptions: req.query,
+        item: item
+        })
+    } catch {
+        res.redirect('/sklep')
+    }
+})
+
+app.delete('/:id', async (req,res) => { 
+    let item
+    try {
+        item = await Item.findById(req.params.id)
+        item_image = item.image
+        const result = await Item.deleteOne({ _id: req.params.id });
+        if (result.deletedCount === 1) {
+            if (item_image != null){
+                removeImage(item_image)
+            }
+            res.redirect('/admin');
+        }
+    } catch {
+        if (item == null) {
+            res.redirect('/')
+        } else {
+            res.redirect(`/${item.id}`)
+        }
+    }
+ })
 
 async function checkAdmin(req) {
     try {
@@ -216,7 +268,7 @@ async function checkAdmin(req) {
         return false
     } catch (error) {
         console.error(error)
-        return false;
+        return false
     }
 }
 

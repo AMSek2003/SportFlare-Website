@@ -37,12 +37,13 @@
             </div>
         </section>
 
-        <section id="products"> <!--TODO adding to cart and redirecting to single product page-->
+        <section id="products"> <!--TODO adding to cart-->
             <% items.forEach(item => { %>
             <div class="card">
-                <a href="#">
                 <div class="image">
-                    <img src="<%= item.imagePath %>">
+                    <a href="/<%= item.id %>">
+                        <img src="<%= item.imagePath %>">
+                    </a>
                 </div>
                 <div class="caption">
                     <p class="rate">
@@ -58,7 +59,7 @@
                 <div class="add_cart">
                     <button>Dodaj do koszyka</button>
                 </div>
-            </a></div>
+            </div>
             <% }) %>
         </section>
 

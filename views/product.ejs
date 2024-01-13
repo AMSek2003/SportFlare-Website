@@ -39,15 +39,15 @@
 
         <section id="product">
             <div class="image">
-                <img src="images/not_found.png" width="100%" alt="">
+                <img src="<%= item.imagePath %>" width="100%" alt="">
             </div>
             <div class="details">
-                <h4>Name</h4>
-                <h2>0 zł</h2>
+                <h4><%= item.name %></h4>
+                <h2><%= item.price %> zł</h2>
                 <input type="number" value="1">
-                <button>Dodaj do koszyka</button>
+                <button>Dodaj do koszyka</button> <!--TODO add to cart-->
                 <h4>Opis produktu</h4>
-                <p>Description</p>
+                <p><%= item.description %></p>
             </div>
         </section>
 

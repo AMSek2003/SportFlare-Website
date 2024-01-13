@@ -61,9 +61,9 @@
                     <p class="prod_name"><%= item.name %></p>
                     <p class="prod_price"><%= item.price %> zł</p>
                 </div>
-                <div class="remove">
-                    <button>Usuń produkt</button> <!--TODO remove product-->
-                </div>
+                <form class="remove" action="/<%= item.id %>?_method=DELETE" method="POST">
+                    <button type="submit">Usuń produkt</button>
+                </form>
             </a></div>
             <% }) %>
         </section>

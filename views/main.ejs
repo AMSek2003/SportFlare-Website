@@ -77,9 +77,11 @@
             <h2>Wyróżnione produkty</h2>
             <div class="prod_container">
                 <% items.slice(0, 5).forEach(item => { %>
-                <div class="card"> <!--TODO - add links and add to cart-->
+                <div class="card">
                     <div class="prod_image">
-                        <img src="<%= item.imagePath %>">
+                        <a href="/<%= item.id %>">
+                            <img src="<%= item.imagePath %>">
+                        </a>
                     </div>
                     <div class="caption">
                         <p class="prod_name"><%= item.name %></p>
@@ -93,7 +95,7 @@
                         <p class="prod_price"><%= item.price %> zł</p>
                     </div>
                     <div class="add_cart">
-                        <button>Dodaj do koszyka</button>
+                        <button>Dodaj do koszyka</button> <!--TODO - add to cart-->
                     </div>
                 </div>
                 <% }) %>
