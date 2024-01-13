@@ -14,9 +14,11 @@
             <a href="/"><img src="images/logo.png" id="logo" alt=""></a>
 
             <div id="navbar">
-                <li id="search">
-                    <a id="search-icon"><i class="fa fa-search" aria-hidden="true"></i></a>
-                    <input type="text" id="search-inp" name="search-inp">
+                <li id="search"> 
+                    <form id="search-form" action="/sklep" method="GET">
+                        <a id="search-icon"><i class="fa fa-search" aria-hidden="true"></i></a>
+                        <input type="text" id="search-inp" name="searchinp" value="<%= searchOptions.name %>">
+                    </form>
                 </li>
                 <li><a href="/">Strona Główna</a></li>
                 <li><a href="/sklep">Sklep</a></li>
@@ -87,14 +89,24 @@
             </div>
         </footer>
 
-
         <script>
-                // Show/hide search input
-                var searchInput = document.getElementById('search-inp');
+            var searchInput = document.getElementById('search-inp')
 
-                document.getElementById('search-icon').addEventListener('click', function () {
-                    searchInput.classList.toggle('show');
-                });
+            document.getElementById('search-icon').addEventListener('click', function () {
+                searchInput.classList.toggle('show')
+            })
+
+            document.getElementById("search-inp").addEventListener("keyup", function (event) {
+
+                if (event.key === "Enter" || event.keyCode === 13) {
+                    submitSearch()
+                }
+            })
+
+            function submitSearch() {
+                var form = document.getElementById("search-form")
+                form.submit()
+            }
         </script>
     </body>
 </html>

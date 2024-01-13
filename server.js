@@ -55,9 +55,19 @@ db.on('error', error => console.error(error))
 db.once('open', () => console.log('Połączono z Mongoose'))
 
 app.get("/", async (req, res) => {
-    const isAdmin = await checkAdmin(req);
+    let searchOptions = {}
+    if (req.query.searchinp != null && req.query.searchinp != '') {
+        searchOptions.name = new RegExp(req.query.searchinp, 'i')
+        searchOptions.description = new RegExp(req.query.searchinp, 'i')
+    }
+    const isAdmin = await checkAdmin(req)
     const items = await Item.find({})
-    res.render('main', { isLoggedIn: checkLogged(req), isAdmin, items:items })
+    res.render('main', { 
+        isLoggedIn: checkLogged(req), 
+        isAdmin, 
+        items:items,
+        searchOptions: req.query
+     })
 });
 
 app.post("/logowanie", checkNotAuthenticated, passport.authenticate('local', {
@@ -100,21 +110,46 @@ app.get("/rejestracja", checkNotAuthenticated, (req, res) => {
 });
 
 app.get("/sklep", async (req, res) => {
+    let searchOptions = {}
+    if (req.query.searchinp != null && req.query.searchinp != '') {
+        searchOptions.name = new RegExp(req.query.searchinp, 'i')
+        searchOptions.description = new RegExp(req.query.searchinp, 'i')
+    }
     const isAdmin = await checkAdmin(req);
-    const items = await Item.find({})
-    res.render('shop', { isLoggedIn: checkLogged(req), isAdmin, items:items })
+    const items = await Item.find(searchOptions)
+    res.render('shop', { 
+        isLoggedIn: checkLogged(req), 
+        isAdmin, 
+        items:items,
+        searchOptions: req.query
+    })
 });
 
 app.get("/koszyk", checkAuthenticated, async (req, res) => {
+    let searchOptions = {}
+    if (req.query.searchinp != null && req.query.searchinp != '') {
+        searchOptions.name = new RegExp(req.query.searchinp, 'i')
+        searchOptions.description = new RegExp(req.query.searchinp, 'i')
+    }
     const isAdmin = await checkAdmin(req);
     const thisUser = await req.user
     const thisId = thisUser._id
     const user = await User.find({_id: thisId})
     const usersCart = user[0].cart
-    res.render('cart', { isLoggedIn: checkLogged(req), isAdmin, cart: usersCart })
+    res.render('cart', { 
+        isLoggedIn: checkLogged(req), 
+        isAdmin, 
+        cart: usersCart,
+        searchOptions: req.query
+     })
 });
 
 app.get("/admin", async (req, res) => {
+    let searchOptions = {}
+    if (req.query.searchinp != null && req.query.searchinp != '') {
+        searchOptions.name = new RegExp(req.query.searchinp, 'i')
+        searchOptions.description = new RegExp(req.query.searchinp, 'i')
+    }
     const isAdmin = await checkAdmin(req);
     const items = await Item.find({})
 
@@ -122,7 +157,8 @@ app.get("/admin", async (req, res) => {
         res.render('management', {
             isLoggedIn: checkLogged(req), 
             isAdmin,
-            items: items
+            items: items,
+            searchOptions: req.query
         })
     } else {
         res.redirect('/')
