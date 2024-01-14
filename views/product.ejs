@@ -45,7 +45,11 @@
                 <h4><%= item.name %></h4>
                 <h2><%= item.price %> zł</h2>
                 <input type="number" value="1">
-                <button>Dodaj do koszyka</button> <!--TODO add to cart-->
+                <% if (isLoggedIn) { %>
+                    <form class="add_cart" action="/<%= item.id %>?_method=PUT" method="POST">
+                        <button type="submit">Dodaj do koszyka</button>
+                    </form>
+                <% } %>
                 <h4>Opis produktu</h4>
                 <p><%= item.description %></p>
             </div>

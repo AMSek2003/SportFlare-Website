@@ -17,10 +17,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true 
     },
-    cart: {
-        type: Array,
-        required: true
-    }
+    cart: [
+        {
+            id: { type: String, required: true },
+            amount: { type: Number, required: true }
+        }
+    ]
 })
 
 module.exports = mongoose.model('User', userSchema)

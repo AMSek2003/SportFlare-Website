@@ -142,10 +142,13 @@ app.get("/koszyk", checkAuthenticated, async (req, res) => {
     const thisId = thisUser._id
     const user = await User.find({_id: thisId})
     const usersCart = user[0].cart
+    const items = await Item.find({})
+    const filteredItems = items.filter(item => usersCart.some(cartItem => cartItem.id === item.id))
     res.render('cart', { 
         isLoggedIn: checkLogged(req), 
         isAdmin, 
         cart: usersCart,
+        items: filteredItems,
         searchOptions: req.query
      })
 })
@@ -239,8 +242,10 @@ app.delete('/:id', async (req,res) => {
     try {
         item = await Item.findById(req.params.id)
         item_image = item.image
+        item_id = item.id
         const result = await Item.deleteOne({ _id: req.params.id });
         if (result.deletedCount === 1) {
+            await removeFromAllCarts(item_id)
             if (item_image != null){
                 removeImage(item_image)
             }
@@ -253,7 +258,60 @@ app.delete('/:id', async (req,res) => {
             res.redirect(`/${item.id}`)
         }
     }
- })
+})
+
+app.put('/:id', async (req, res) => {
+    try {
+        const itemId = req.params.id
+        const thisUser = await req.user
+        const thisId = thisUser._id
+        const userList = await User.find({_id: thisId})
+        const user = userList[0]
+        const cart = user.cart
+
+        let item = cart.find(item => item.id === itemId)
+
+        if (item) {
+            let itemIndex = cart.findIndex(item => item.id === itemId)
+            cart[itemIndex].amount += 1
+        } else {
+            let newItem = { id: itemId, amount: 1 }
+            cart.push(newItem)
+        }
+        user.cart = cart
+        await user.save()
+        res.redirect('/koszyk')
+    } catch(err) {
+        console.error(err)
+        res.redirect('/sklep')
+    }
+})
+
+app.put('/:id/remove', async (req, res) => {
+    try {
+        const itemId = req.params.id
+        const thisUser = await req.user
+        const thisId = thisUser._id
+        const userList = await User.find({_id: thisId})
+        const user = userList[0]
+        const cart = user.cart
+
+        let item = cart.find(item => item.id === itemId)
+
+        if (item) {
+            let itemIndex = cart.findIndex(item => item.id === itemId)
+            const newCart = cart.filter((value, index) => index !== itemIndex)
+            user.cart = newCart
+            await user.save()
+            res.redirect('/koszyk')
+        } else {
+            res.redirect('/koszyk')
+        }
+    } catch(err) {
+        console.error(err)
+        res.redirect('/')
+    }
+})
 
 async function checkAdmin(req) {
     try {
@@ -261,7 +319,6 @@ async function checkAdmin(req) {
             const thisUser = await req.user
             const thisId = thisUser._id
             const user = await User.find({_id: thisId})
-
             return user[0].role === 'admin'
         }
         
@@ -296,6 +353,21 @@ function removeImage(fileName){
     fs.unlink(path.join(uploadPath, fileName), err => {
         if (err) console.err(err)
     })
+}
+
+async function removeFromAllCarts(id) {
+    try {
+        const users = await User.find({ 'cart.id': id })
+        users.forEach(async user => {
+            let cart = user.cart
+            let itemIndex = cart.findIndex(item => item.id === id)
+            let newCart = cart.filter((value, index) => index !== itemIndex)
+            user.cart = newCart
+            await user.save()
+        })
+    } catch(err) {
+        console.log(err)
+    }
 }
 
 app.listen(process.env.PORT || 3000)

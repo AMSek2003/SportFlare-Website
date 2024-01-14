@@ -37,7 +37,7 @@
             </div>
         </section>
 
-        <section id="products"> <!--TODO adding to cart-->
+        <section id="products">
             <% items.forEach(item => { %>
             <div class="card">
                 <div class="image">
@@ -56,9 +56,11 @@
                     <p class="prod_name"><%= item.name %></p>
                     <p class="prod_price"><%= item.price %> zł</p>
                 </div>
-                <div class="add_cart">
-                    <button>Dodaj do koszyka</button>
-                </div>
+                <% if (isLoggedIn) { %>
+                    <form class="add_cart" action="/<%= item.id %>?_method=PUT" method="POST">
+                        <button type="submit">Dodaj do koszyka</button>
+                    </form>
+                <% } %>
             </div>
             <% }) %>
         </section>

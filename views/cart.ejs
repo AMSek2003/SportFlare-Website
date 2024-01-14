@@ -37,33 +37,45 @@
             </div>
         </section>
 
-        <section id="cart"> <!--TODO finish backend-->
+        <section id="cart">
             <% let amount = 0;
                 cart.forEach(item => {
-                sum += 1;
+                amount += 1;
             }); %>
-            <h3 id="amount_of_prod"> <%= amount %> Produktów</h3>
+            <h3 id="amount_of_prod">
+                <% if (amount == 1) { %>
+                  <%= amount %> Produkt
+                <% } else if (amount >= 2 && amount <= 4) { %>
+                  <%= amount %> Produkty
+                <% } else { %>
+                  <%= amount %> Produktów
+                <% } %>
+              </h3>
+            <% items.forEach(item => { %>
             <div class="card">
-                <% cart.forEach(item => { %>
                 <div class="image">
-                    <img src="images/not_found.png">
+                    <img src="<%= item.imagePath %>">
                 </div>
         
                 <div class="caption">
                     <p class="name"><%= item.name %></p>
-                    <p class="price"><b><%= item.price %> zł</b></p>
+                    <p class="price"><b><%= item.price * (cart.find(cartItem => cartItem.id === item.id)?.amount || 1) %> zł</b></p>
                     <div class="amount">
-                        <p>Ilość</p>
-                        <input type="number" value="1" min="1">
+                        <p>Ilość: <%= cart.find(cartItem => cartItem.id === item.id)?.amount || 1 %></p>
                     </div>
-                    <button class="remove">Usuń</button>
+                    <form action="/<%= item.id %>/remove?_method=PUT" method="POST">
+                        <button type="submit" class="remove">Usuń</button>
+                    </form>
                 </div>
-                <% }) %>
             </div>
+            <% }) %>
             <% let sum = 0;
-                cart.forEach(item => {
-                sum += item.price;
-            }); %>
+                cart.forEach(cartItem => {
+                    let item = items.find(item => item.id === cartItem.id);
+                    if (item) {
+                        sum += item.price * cartItem.amount;
+                    }
+                }); %>
             <h2 id="total_price">Suma: <%= sum %> zł</h2>
         </section>
 

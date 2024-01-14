@@ -94,9 +94,11 @@
                         </p>
                         <p class="prod_price"><%= item.price %> zł</p>
                     </div>
-                    <div class="add_cart">
-                        <button>Dodaj do koszyka</button> <!--TODO - add to cart-->
-                    </div>
+                    <% if (isLoggedIn) { %>
+                    <form class="add_cart" action="/<%= item.id %>?_method=PUT" method="POST">
+                        <button type="submit">Dodaj do koszyka</button>
+                    </form>
+                    <% } %>
                 </div>
                 <% }) %>
             </div>
