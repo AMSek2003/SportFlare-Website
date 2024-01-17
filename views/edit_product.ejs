@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>SportFlare - Sklep Sportowy</title>
         <script src="https://kit.fontawesome.com/3657dbfb53.js" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="management.css">
+        <link rel="stylesheet" href="/style.css">
+        <link rel="stylesheet" href="/management.css">
     </head>
 
     <body>
@@ -37,63 +37,18 @@
             </div>
         </section>
 
-        <form id="add" action="/admin" method="POST" enctype="multipart/form-data">
-            <h2>Dodaj produkt</h2>
+        <form id="add" action="/edit/<%= item._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+            <h2>Edytuj produkt</h2>
             <% if (locals.errorMessage != null) { %>
                 <%=errorMessage%>
             <% } %>
-            <input type="text" name="name" id="name" placeholder="Nazwa" required>
-            <textarea name="description" id="description" placeholder="Opis"></textarea>
-            <input type="number" name="price" id="price" min="1" placeholder="Cena (PLN)" required>
-            <input type="file" name="image" id="image" required hidden>
+            <input type="text" name="name" id="name" placeholder="Nazwa" value="<%= item.name %>" required>
+            <textarea name="description" id="description" placeholder="Opis" value="<%= item.description %>"></textarea>
+            <input type="number" name="price" id="price" min="1" placeholder="Cena (PLN)" value="<%= item.price %>" required>
+            <input type="file" name="image" id="image" hidden>
             <button id="choose" onclick="chooseImage()">Prześlij obraz</button>
             <input type="submit" value="Prześlij" name="submit">
         </form>
-
-        <h2 class="title">Zamówienia</h2>
-        <section id="orders"> 
-            <div class="order">
-                <p>User</p>
-                <div class="item_list">
-                    <p>Name</p>
-                    <p>Amount</p>
-                    <p>Sum</p>
-                </div>
-            </div>
-        </section>
-
-        <h2 class="title">Użytkownicy</h2>
-        <section id="users">
-            <% users.forEach(user => { %>
-            <div class="user">
-                <p>Nazwa: <%= user.name %></p>
-                <p>E-mail: <%= user.email %></p>
-                <p>Rola: <%= user.role %></p>
-            </div>
-            <% }) %>
-        </section>
-
-        <h2 class="title">Produkty</h2>
-        <section id="products">
-            <% items.forEach(item => { %>
-            <div class="card">
-                <a href="#">
-                <div class="image">
-                    <img src="<%= item.imagePath %>">
-                </div>
-                <div class="caption">
-                    <p class="prod_name"><%= item.name %></p>
-                    <p class="prod_price"><%= item.price %> zł</p>
-                </div>
-                <div class="edit">
-                    <button onclick="location.href='/edit/<%= item.id %>'">Edytuj</button>
-                </div>
-                <form class="remove" action="/<%= item.id %>?_method=DELETE" method="POST">
-                    <button type="submit">Usuń</button>
-                </form>
-            </a></div>
-            <% }) %>
-        </section>
 
         <footer>
             <div id="col">

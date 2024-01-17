@@ -163,12 +163,14 @@ app.get("/admin", async (req, res) => {
     }
     const isAdmin = await checkAdmin(req);
     const items = await Item.find({})
+    const users = await User.find({})
 
     if (isAdmin) {
         res.render('management', {
             isLoggedIn: checkLogged(req), 
             isAdmin,
             items: items,
+            users: users,
             searchOptions: req.query
         })
     } else {
@@ -212,6 +214,65 @@ app.delete('/logout', (req, res) => {
         }
         res.redirect('/')
     })
+})
+
+app.get("/edit/:id", async (req, res) => {
+    let searchOptions = {}
+    if (req.query.searchinp != null && req.query.searchinp != '') {
+        searchOptions["$or"] = [
+            { name: new RegExp(req.query.searchinp, 'i') },
+            { description: new RegExp(req.query.searchinp, 'i') }
+        ]
+    }
+    const isAdmin = await checkAdmin(req);
+    const itemList = await Item.find({_id: req.params.id})
+    const item = itemList[0]
+
+    if (isAdmin) {
+        res.render('edit_product', {
+            isLoggedIn: checkLogged(req), 
+            isAdmin,
+            item: item,
+            searchOptions: req.query
+        })
+    } else {
+        res.redirect('/')
+    }
+})
+
+app.put("/edit/:id", upload.single('image'), async (req, res) => {
+    try {
+        const fileName = req.file != null ? req.file.filename : null
+        const item = await Item.findById(req.params.id)
+
+        if (req.body.name != item.name){
+            item.name = req.body.name
+        }
+
+        if (req.body.description != item.description){
+            item.description = req.body.description
+        }
+
+        if (req.body.price != item.price){
+            item.price = req.body.price
+        }
+
+        if (fileName != null) {
+            if (item.image != null){
+                removeImage(item.image)
+            }
+            item.image = fileName
+        }
+
+        await item.save()
+        res.redirect(`/:${item.id}`)
+
+    } catch {
+        if (fileName != null){
+            removeImage(fileName)
+        }
+        res.redirect(`/:${item.id}`)
+    }
 })
 
 app.get('/:id', async (req,res) => {

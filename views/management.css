@@ -9,6 +9,11 @@
     margin: auto;
 }
 
+.title {
+    margin: 20px;
+    text-align: center;
+}
+
 #products .card{
     width: 300px;
     max-width: 250px;
@@ -42,7 +47,7 @@
     padding-bottom: 15px;
     text-align: left;
     line-height: 2px;
-    height: 25%;
+    height: 15%;
 }
 
 #products .card a{
@@ -52,7 +57,7 @@
 #products .card .remove button{
     border: none;
     transition: 0.4s ease;
-    background-color: rgb(215, 173, 255);
+    background-color: rgb(206, 132, 132);
     padding: 5px;
     width: 60%;
     cursor: pointer;
@@ -60,7 +65,45 @@
 }
 
 #products .card .remove button:hover{
+    background-color: rgb(218, 56, 56);
+}
+
+#products .card .edit button{
+    border: none;
+    transition: 0.4s ease;
+    background-color: rgb(215, 173, 255);
+    padding: 5px;
+    margin: 5px;
+    width: 60%;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#products .card .edit button:hover{
     background-color: rgb(183, 81, 251);
+}
+
+#users {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    margin-bottom: 50px;
+}
+
+#users .user {
+    border: 1px solid black;
+    width: 97%;
+    display: flex;
+    padding: 20px;
+    margin: 20px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#users .user p {
+    margin: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 #add{
