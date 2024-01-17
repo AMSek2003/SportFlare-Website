@@ -51,15 +51,28 @@
         </form>
 
         <h2 class="title">Zamówienia</h2>
+        <% if (orders.length === 0) { %>
+        <p>Brak zamówień</p>
+        <% } %>
         <section id="orders"> 
+            <% orders.forEach(order => { 
+                let sum = 0 %>
             <div class="order">
-                <p>User</p>
+                <p id="user">Klient: <%= users.find(user => user.id === order.user).email %></p>
+                <% order.items.forEach(item => { 
+                    let i = items.find(j => j.id === item.id);
+                    if (i) {
+                        sum += i.price * item.amount;
+                    } %>
                 <div class="item_list">
-                    <p>Name</p>
-                    <p>Amount</p>
-                    <p>Sum</p>
+                    <p><%= items.find(i => i.id === item.id).name %></p>
+                    <p>Ilość: <%= item.amount %></p>
+                    <p><%= items.find(i => i.id === item.id).price * item.amount %> zł</p>
                 </div>
+                <% })%>
+                <p>Suma <%= sum %> zł</p>
             </div>
+            <% }) %>
         </section>
 
         <h2 class="title">Użytkownicy</h2>

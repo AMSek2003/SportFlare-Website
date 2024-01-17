@@ -15,6 +15,7 @@ const methodOverride = require('method-override')
 const imageTypes = ['image/jpeg', 'image/png', 'image/gif']
 const User = require('./models/user')
 const Item = require('./models/item')
+const Order = require('./models/order')
 const uploadPath = Item.imgBasePath
 const upload = multer({
     dest: uploadPath,
@@ -164,6 +165,7 @@ app.get("/admin", async (req, res) => {
     const isAdmin = await checkAdmin(req);
     const items = await Item.find({})
     const users = await User.find({})
+    const orders = await Order.find({})
 
     if (isAdmin) {
         res.render('management', {
@@ -171,6 +173,7 @@ app.get("/admin", async (req, res) => {
             isAdmin,
             items: items,
             users: users,
+            orders: orders,
             searchOptions: req.query
         })
     } else {
@@ -204,6 +207,34 @@ app.post("/admin", upload.single('image'), async (req, res) => {
             removeImage(item.image)
         }
         res.redirect('/admin')
+    }
+})
+
+app.put('/order', async (req, res) => {
+    try {
+        const thisUser = await req.user
+        const thisId = thisUser._id
+        const userList = await User.find({_id: thisId})
+        const user = userList[0]
+        const cart = user.cart
+
+        if (cart.length === 0){
+            res.redirect('/sklep')
+        } else {
+            const order = new Order({
+                user: user.id,
+                items: []
+            })
+            cart.forEach(item => {
+                order.items.push(item)
+            })
+            user.cart = []
+            await user.save()
+            await order.save()
+            res.redirect('/')
+        }
+    } catch{
+        res.redirect('/sklep')
     }
 })
 
@@ -341,9 +372,8 @@ app.put('/:id', async (req, res) => {
         }
         user.cart = cart
         await user.save()
-        res.redirect('/koszyk')
-    } catch(err) {
-        console.error(err)
+        res.redirect('/sklep')
+    } catch {
         res.redirect('/sklep')
     }
 })

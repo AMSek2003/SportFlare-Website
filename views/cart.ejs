@@ -77,6 +77,11 @@
                     }
                 }); %>
             <h2 id="total_price">Suma: <%= sum %> zł</h2>
+            <% if(items.length != 0) { %>
+            <form id="order" action="/order?_method=PUT" method="POST">
+                <button type="submit">Złóż zamówienie</button>
+            </form>
+            <% } %>
         </section>
 
         <footer>

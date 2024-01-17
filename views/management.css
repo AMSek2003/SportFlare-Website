@@ -1,5 +1,10 @@
 /* Style for the management view (for admin) */
 
+p {
+    margin: 20px;
+    text-align: center;
+}
+
 #products {
     max-width: 1500px;
     width: 95%;
@@ -91,7 +96,7 @@
 }
 
 #users .user {
-    border: 1px solid black;
+    border: 1px solid rgb(177, 177, 177);
     width: 97%;
     display: flex;
     padding: 20px;
@@ -104,6 +109,32 @@
     margin: 20px;
     padding-left: 30px;
     padding-right: 30px;
+}
+
+#orders {
+    margin: 30px;
+    display: flex;
+    margin-bottom: 80px;
+}
+
+#orders .order {
+    width: 25%;
+    height: auto;
+    border: 1px solid rgb(177, 177, 177);
+    background-color: rgb(247, 241, 234);
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+#orders .order #user {
+    text-decoration: underline;
+}
+
+#orders .order .item_list{
+    border: 1px solid rgb(192, 192, 192);
+    margin: 10px; 
+
 }
 
 #add{
